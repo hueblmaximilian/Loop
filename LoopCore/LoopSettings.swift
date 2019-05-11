@@ -56,6 +56,8 @@ public struct LoopSettings: Equatable {
         glucoseTargetRangeSchedule: GlucoseRangeSchedule? = nil,
         maximumBasalRatePerHour: Double? = nil,
         maximumBolus: Double? = nil,
+        fpuRatio: Double? = nil,
+        fpuDelay: Double? = nil,
         suspendThreshold: GlucoseThreshold? = nil,
         integralRetrospectiveCorrectionEnabled: Bool = true
     ) {
@@ -63,6 +65,8 @@ public struct LoopSettings: Equatable {
         self.glucoseTargetRangeSchedule = glucoseTargetRangeSchedule
         self.maximumBasalRatePerHour = maximumBasalRatePerHour
         self.maximumBolus = maximumBolus
+        self.fpuRatio = fpuRatio
+        self.fpuDelay = fpuDelay
         self.suspendThreshold = suspendThreshold
         self.integralRetrospectiveCorrectionEnabled = integralRetrospectiveCorrectionEnabled
     }

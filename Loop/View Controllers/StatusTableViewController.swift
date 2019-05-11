@@ -1115,7 +1115,7 @@ final class StatusTableViewController: ChartsTableViewController {
                 case .failure(let error):
                     // Ignore bolus wizard errors
                     if error is CarbStore.CarbStoreError {
-                        self.presentAlertController(with: error)
+                        self.present(UIAlertController(with: error), animated: true)
                     } else {
                         self.deviceManager.logger.addError(error, fromSource: "Bolus")
                     }
