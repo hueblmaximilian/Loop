@@ -5,6 +5,7 @@
 //  Created by Nathan Racklyeft on 9/6/15.
 //  Copyright © 2015 Nathan Racklyeft. All rights reserved.
 //
+//  Fat-Protein Unit code by Robert Silvers, 10/2018.
 
 import UIKit
 import HealthKit
@@ -203,6 +204,8 @@ final class StatusTableViewController: ChartsTableViewController {
         }
     }
 
+    //var dataManager: DeviceDataManager! // RSS
+    
     // Toggles the display mode based on the screen aspect ratio. Should not be updated outside of reloadData().
     private var landscapeMode = false
 
@@ -1062,6 +1065,8 @@ final class StatusTableViewController: ChartsTableViewController {
     /// Unwind segue action from the CarbEntryEditViewController
     ///
     /// - parameter segue: The unwind segue
+    /// RSS - This triggers when you enter carb and hit save.
+    
     @IBAction func unwindFromEditing(_ segue: UIStoryboardSegue) {
         guard let carbVC = segue.source as? CarbEntryEditViewController, let updatedEntry = carbVC.updatedCarbEntry else {
             return
@@ -1075,6 +1080,7 @@ final class StatusTableViewController: ChartsTableViewController {
                 }
             }
         }
+        // RSS - This is were carb is entered for a new entry.
         deviceManager.loopManager.addCarbEntryAndRecommendBolus(updatedEntry) { (result) -> Void in
             DispatchQueue.main.async {
                 switch result {
@@ -1086,6 +1092,30 @@ final class StatusTableViewController: ChartsTableViewController {
                     // Ignore bolus wizard errors
                     if error is CarbStore.CarbStoreError {
                         self.present(UIAlertController(with: error), animated: true)
+                    } else {
+                        self.deviceManager.logger.addError(error, fromSource: "Bolus")
+                    }
+                }
+            }
+        }
+        carbVC.FPCaloriesRatio = deviceManager.loopManager.settings.fpuRatio ?? 150.0 // Safer default.
+        carbVC.onsetDelay = deviceManager.loopManager.settings.fpuDelay ?? 60.0
+        
+        // RSS - Repeat for the fat and protein portion...
+        guard let updatedFPEntry = carbVC.updatedFPCarbEntry else {
+            return
+        }
+        
+        deviceManager.loopManager.addCarbEntryAndRecommendBolus(updatedFPEntry) { (result) -> Void in
+            DispatchQueue.main.async {
+                switch result {
+                case .success:
+                    // Never give bolus for fat and protein.
+                    print("Not recommending bolus for fat or protein.")
+                case .failure(let error):
+                    // Ignore bolus wizard errors
+                    if error is CarbStore.CarbStoreError {
+                        self.presentAlertController(with: error)
                     } else {
                         self.deviceManager.logger.addError(error, fromSource: "Bolus")
                     }
