@@ -1,7 +1,7 @@
-github "kdisimone/LoopKit" "jojo"
-github "kdisimone/CGMBLEKit" "jojo"
+github "kdisimone/LoopKit" "jojo-prebolus"
+github "kdisimone/CGMBLEKit" "jojo-prebolus"
 github "i-schuetz/SwiftCharts" == 0.6.5
-github "kdisimone/dexcom-share-client-swift" "jojo"
-github "kdisimone/G4ShareSpy" "jojo"
-github "kdisimone/rileylink_ios" "jojo"
+github "kdisimone/dexcom-share-client-swift" "jojo-prebolus"
+github "kdisimone/G4ShareSpy" "jojo-prebolus"
+github "kdisimone/rileylink_ios" "jojo-prebolus"
 github "LoopKit/Amplitude-iOS" "decreepify"
